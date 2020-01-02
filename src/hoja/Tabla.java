@@ -7,6 +7,8 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.NoSuchElementException;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 //##########################################//
@@ -26,6 +28,7 @@ public class Tabla {
 	static String fuente = "Tahoma";
 	Deque<String[][]> accionesDeshacer = new ArrayDeque<String[][]>();
 	Deque<String[][]> accionesRehacer = new ArrayDeque<String[][]>();
+	int contadorCicloDeshacer  = 0;
 	
 	//##########################################//
 	//METODO CONSTRUCTOR DE LAS TABLAS
@@ -250,7 +253,8 @@ public class Tabla {
 	* Este metodo actualiza los valores de la tabla con los del excel (nivel casilla)
 	*/
 	public void updateCell(int fila, int columna) {
-		tabla.setValueAt(excel[fila][columna].toString(), fila, columna);
+		if(!tabla.getValueAt(fila, columna).toString().contentEquals(excel[fila][columna].toString()))
+			tabla.setValueAt(excel[fila][columna].toString(), fila, columna);
 	}
 	
 	/**
@@ -260,6 +264,8 @@ public class Tabla {
 		for(int i=1; i<=filas; i++) {
 			for(int j=1; j<=columnas; j++) {
 				updateCell(i, j);
+				//if(!tabla.getValueAt(i, j).toString().contentEquals(excel[i][j].toString()))
+					//tabla.setValueAt(excel[i][j].toString(), i, j);
 			}
 		}
 	}
@@ -277,7 +283,7 @@ public class Tabla {
 			for(int j=1; j<=columnas; j++) {
 				if(!(a[i][j].contentEquals(b[i][j]))) {
 					prueba=false;
-					System.out.println("No son IGUALEEEEEES");
+					//System.out.println("No son IGUALEEEEEES");
 					break;
 				}
 			}
@@ -285,7 +291,7 @@ public class Tabla {
 				break;
 			}
 		}
-		System.out.println("si no he dicho nada, son iguales");
+		//System.out.println("si no he dicho nada, son iguales");
 		return prueba;
 	}
 	
@@ -303,61 +309,73 @@ public class Tabla {
 		
 		this.guardarEnColaDeshacer(nuevo);
 		
-		System.out.println("se ha guardado el estado inicial de la tabla");
+		//System.out.println("se ha guardado el estado inicial de la tabla");
 	}
 	/**
 	 * Metodo que guarda los estados no repetidos de la tabla
 	 */
 	public void guardarModificacion() {
-		String[][] estado = this.sacarDeColaDeshacer();//accionesDeshacer.poll();
 
-		String[][] nuevo = new String[filas+1][columnas+1];
+		try{
+			String[][] estado = null;
+			String[][] nuevo = new String[filas+1][columnas+1];
+			
 			for(int i=0; i<=filas; i++) {
 				for(int j=0; j<=columnas; j++) {
 					nuevo[i][j] = this.excel[i][j];
 				}
 			}
+			
+			if(accionesDeshacer.size()!=0) {
+				estado = this.sacarDeColaDeshacer();//accionesDeshacer.poll();
+			}else {
+				this.guardarEnColaDeshacer(nuevo);
+			}
+			
+			if(estado!=null && !isEquals(nuevo, estado)){
 
-		if(estado!=null && !isEquals(nuevo, estado)){
-			//accionesDeshacer.push(estado);
-			this.guardarEnColaDeshacer(estado);
-			//accionesDeshacer.push(this.excel);
-			this.guardarEnColaDeshacer(nuevo);
-			//this.guardarEnColaDeshacer(this.excel);
-			System.out.println("el estado a guardar NOOOOO es el mismo");
-		}else{
-			//accionesDeshacer.push(estado);
-			this.guardarEnColaDeshacer(estado);
-			System.out.println("el estado a guardar es el mismo");
+				this.guardarEnColaDeshacer(estado);
+				this.guardarEnColaDeshacer(nuevo);
+
+				/*if(contadorCicloDeshacer!=0 && (accionesDeshacer.size()+accionesRehacer.size()!=contadorCicloDeshacer)){
+					accionesRehacer.clear();
+					contadorCicloDeshacer=0;
+				}*/
+				
+				//System.out.println("el estado a guardar NOOOOO es el mismo");
+			}/*else{
+				//accionesDeshacer.push(estado);
+				this.guardarEnColaDeshacer(estado);
+				//System.out.println("el estado a guardar es el mismo");
+			}*/
+		}catch(Exception e){
+			JOptionPane.showMessageDialog(new JFrame(), e.getMessage(), "Fallo de Tabla", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
 	public void guardarEnColaDeshacer(String[][] tabla) {
 		this.accionesDeshacer.push(tabla);
-		System.out.println("el estado a guardar es el mismo");
+		System.out.println("Guardado en deshacer = \n" + ExceltoString(tabla));
 	}
 	
 	public String[][] sacarDeColaDeshacer(){
-		return this.accionesDeshacer.poll();
+		String[][] tabla = this.accionesDeshacer.poll();
+		System.out.println("Sacado de deshacer = \n" + ExceltoString(tabla));
+		return tabla;
 	}
 	
 	public void guardarEnColaRehacer(String[][] tabla) {
 		this.accionesRehacer.push(tabla);
-		System.out.println("el estado a guardar es el mismo");
+		System.out.println("Guardado en rehacer = \n" + ExceltoString(tabla));
+		//System.out.println("el estado a guardar es el mismo");
 	}
 	
 	public String[][] sacarDeColaRehacer(){
-		return this.accionesRehacer.poll();
+		String[][] tabla = this.accionesRehacer.poll();
+		System.out.println("Sacado de rehacer = \n" + ExceltoString(tabla));
+		return tabla;
 	}
 	
-	/*public Deque<String[][]> colaDeshacer(){
-		return this.accionesDeshacer;
-	}
-	
-	public Deque<String[][]> colaRehacer(){
-		return this.accionesRehacer;
-	}*/
-
 	//##########################################//
 	//DESHACER
 	//##########################################//
@@ -366,23 +384,39 @@ public class Tabla {
 	 * @throws TableException
 	 */
 	public void deshacer() throws TableException{
-		try {
-			//accionesRehacer.push(accionesDeshacer.poll());
-			this.guardarEnColaRehacer(this.sacarDeColaDeshacer());
-			
-			String [][] nuevo = this.sacarDeColaDeshacer();//accionesDeshacer.poll();
-			for(int i=0; i<=filas; i++) {
-				for(int j=0; j<=columnas; j++) {
-					this.excel[i][j] = nuevo[i][j];
+		
+		//if(accionesDeshacer.size()!=0){
+			try {
+				//accionesRehacer.push(accionesDeshacer.poll());
+				if(accionesDeshacer.size()!=0) {
+					String [][] paraRehacer = this.sacarDeColaDeshacer();
+					String [][] nuevo = null;
+					
+					if(accionesDeshacer.size()!=0) {
+						nuevo = this.sacarDeColaDeshacer();//accionesDeshacer.poll();
+						this.guardarEnColaRehacer(paraRehacer);
+					}else {
+						this.guardarEnColaDeshacer(paraRehacer);
+						throw new TableException("No se pueden deshacer más acciones");
+					}
+						
+					for(int i=0; i<=filas; i++) {
+						for(int j=0; j<=columnas; j++) {
+							this.excel[i][j] = nuevo[i][j];
+						}
+					}
+					
 				}
+				updateTable();
+				//System.out.println("Se ha deshecho una accion en la tabla");
+			}catch(Exception e) {
+				throw new TableException("No se pueden deshacer más acciones");
 			}
-			updateTable();
-			//System.out.println("Se ha deshecho una accion en la tabla");
-		}catch(NoSuchElementException e) {
-			throw new TableException("No se pueden deshacer más acciones");
-		}
+		/*}else{
+			JOptionPane.showMessageDialog(new JFrame(), "La cola de deshacer esta vacía", "Fallo de Tabla", JOptionPane.ERROR_MESSAGE);
+		}*/
+		
 	}
-
 	//##########################################//
 	//REHACER
 	//##########################################//
@@ -391,20 +425,27 @@ public class Tabla {
 	 * @throws TableException
 	 */
 	public void rehacer() throws TableException{
-		try {
-			//this.excel = accionesRehacer.poll();
-			
-			String [][] nuevo = this.sacarDeColaRehacer();//accionesDeshacer.poll();
-			for(int i=0; i<=filas; i++) {
-				for(int j=0; j<=columnas; j++) {
-					this.excel[i][j] = nuevo[i][j];
+		
+		if(accionesRehacer.size()!=0){
+			try {
+				//this.excel = accionesRehacer.poll();
+				
+				//contadorCicloDeshacer = accionesDeshacer.size() + accionesRehacer.size();
+
+				String [][] nuevo = this.sacarDeColaRehacer();//accionesDeshacer.poll();
+				for(int i=0; i<=filas; i++) {
+					for(int j=0; j<=columnas; j++) {
+						this.excel[i][j] = nuevo[i][j];
+					}
 				}
+				updateTable(); 
+				//System.out.println("Se ha rehecho una accion en la tabla");
+				//guardarModificacion();
+			}catch(Exception e) {
+				throw new TableException("No se pueden rehacer más acciones");
 			}
-			updateTable();
-			//System.out.println("Se ha rehecho una accion en la tabla");
-			guardarModificacion();
-		}catch(NoSuchElementException e) {
-			throw new TableException("No se pueden rehacer más acciones");
+		}else{
+			JOptionPane.showMessageDialog(new JFrame(), "La cola de rehacer esta vacía", "Fallo de Tabla", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -518,6 +559,18 @@ public class Tabla {
 	public void cambioFuente() {
 		tabla.setFont(new java.awt.Font(fuente, 0, getTamanioFuente()));
 		updateTable();
+	}
+	
+	public String ExceltoString(String[][] excel) {
+		StringBuffer cadena = new StringBuffer();
+		for(int i=0; i<=filas; i++) {
+			for(int j=0; j<=columnas; j++) {
+				cadena.append(excel[i][j].toString());
+				cadena.append(" ");
+			}
+			cadena.append("\n");
+		}
+		return cadena.toString();
 	}
 //##########################################//
 //FIN DE LA CLASE TABLA
