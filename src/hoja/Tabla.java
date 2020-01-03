@@ -29,6 +29,8 @@ public class Tabla {
 	Deque<String[][]> accionesDeshacer = new ArrayDeque<String[][]>();
 	Deque<String[][]> accionesRehacer = new ArrayDeque<String[][]>();
 	int contadorCicloDeshacer  = 0;
+	int variableEspecial = 0;
+	boolean ciclo = false;
 	
 	//##########################################//
 	//METODO CONSTRUCTOR DE LAS TABLAS
@@ -348,6 +350,20 @@ public class Tabla {
 				this.guardarEnColaDeshacer(estado);
 				//System.out.println("el estado a guardar es el mismo");
 			}*/
+			
+			System.out.println("Tamanyo del ciclo = "+ this.contadorCicloDeshacer);
+			if(this.ciclo = true && this.variableEspecial==1) {
+				System.out.println("\nEl ciclo esta abierto");
+				this.contadorCicloDeshacer = accionesDeshacer.size()+accionesRehacer.size();
+				ciclo = false;
+			}else if(this.contadorCicloDeshacer!=0) {
+				if(this.contadorCicloDeshacer != accionesDeshacer.size()+accionesRehacer.size()) {
+					accionesRehacer.clear();
+					System.out.println("\nVaciada la cola de rehacer");
+					ciclo = false;
+					this.variableEspecial = 0;
+				}
+			}
 		}catch(Exception e){
 			JOptionPane.showMessageDialog(new JFrame(), e.getMessage(), "Fallo de Tabla", JOptionPane.ERROR_MESSAGE);
 		}
@@ -355,24 +371,24 @@ public class Tabla {
 	
 	public void guardarEnColaDeshacer(String[][] tabla) {
 		this.accionesDeshacer.push(tabla);
-		System.out.println("Guardado en deshacer = \n" + ExceltoString(tabla));
+		//System.out.println("Guardado en deshacer = \n" + ExceltoString(tabla));
 	}
 	
 	public String[][] sacarDeColaDeshacer(){
 		String[][] tabla = this.accionesDeshacer.poll();
-		System.out.println("Sacado de deshacer = \n" + ExceltoString(tabla));
+		//System.out.println("Sacado de deshacer = \n" + ExceltoString(tabla));
 		return tabla;
 	}
 	
 	public void guardarEnColaRehacer(String[][] tabla) {
 		this.accionesRehacer.push(tabla);
-		System.out.println("Guardado en rehacer = \n" + ExceltoString(tabla));
+		//System.out.println("Guardado en rehacer = \n" + ExceltoString(tabla));
 		//System.out.println("el estado a guardar es el mismo");
 	}
 	
 	public String[][] sacarDeColaRehacer(){
 		String[][] tabla = this.accionesRehacer.poll();
-		System.out.println("Sacado de rehacer = \n" + ExceltoString(tabla));
+		//System.out.println("Sacado de rehacer = \n" + ExceltoString(tabla));
 		return tabla;
 	}
 	
@@ -395,6 +411,8 @@ public class Tabla {
 					if(accionesDeshacer.size()!=0) {
 						nuevo = this.sacarDeColaDeshacer();//accionesDeshacer.poll();
 						this.guardarEnColaRehacer(paraRehacer);
+						this.ciclo = true;
+						this.variableEspecial++;
 					}else {
 						this.guardarEnColaDeshacer(paraRehacer);
 						throw new TableException("No se pueden deshacer más acciones");
