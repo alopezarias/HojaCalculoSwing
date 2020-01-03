@@ -1,5 +1,7 @@
 package hoja;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 //##########################################//
 //IMPORTANDO LIBRERIAS Y COMPLEMENTOS
 //##########################################//
@@ -7,9 +9,13 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.NoSuchElementException;
 
+import javax.swing.AbstractAction;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.KeyStroke;
 
 //##########################################//
 //CLASE TABLA QUE MANEJA EL RESTO DE COSAS
@@ -351,15 +357,15 @@ public class Tabla {
 				//System.out.println("el estado a guardar es el mismo");
 			}*/
 			
-			System.out.println("Tamanyo del ciclo = "+ this.contadorCicloDeshacer);
+			//System.out.println("Tamanyo del ciclo = "+ this.contadorCicloDeshacer);
 			if(this.ciclo = true && this.variableEspecial==1) {
-				System.out.println("\nEl ciclo esta abierto");
+				//System.out.println("\nEl ciclo esta abierto");
 				this.contadorCicloDeshacer = accionesDeshacer.size()+accionesRehacer.size();
 				ciclo = false;
 			}else if(this.contadorCicloDeshacer!=0) {
 				if(this.contadorCicloDeshacer != accionesDeshacer.size()+accionesRehacer.size()) {
 					accionesRehacer.clear();
-					System.out.println("\nVaciada la cola de rehacer");
+					//System.out.println("\nVaciada la cola de rehacer");
 					ciclo = false;
 					this.variableEspecial = 0;
 				}
@@ -590,6 +596,61 @@ public class Tabla {
 		}
 		return cadena.toString();
 	}
+	
+	public void createKeybindings(JTable table) {
+		//##########################################//
+		//CANCELACION DE ENTER
+		//##########################################//	
+		table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "Enter");
+		table.getActionMap().put("Enter", new AbstractAction() {
+		        @Override
+		        public void actionPerformed(ActionEvent ae) {
+		            //do something on JTable enter pressed
+		        }
+		});
+		//##########################################//
+		//CANCELACION DE LAS FLECHAS
+		//##########################################//
+		table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "Arriba");
+		table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "Abajo");
+		table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "Izquierda");
+		table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "Derecha");
+		
+		table.getActionMap().put("Arriba", new AbstractAction() {
+		        @Override
+		        public void actionPerformed(ActionEvent ae) {
+		            //do something on JTable enter pressed
+		        }
+		});
+		table.getActionMap().put("Abajo", new AbstractAction() {
+	        @Override
+	        public void actionPerformed(ActionEvent ae) {
+	            //do something on JTable enter pressed
+	        }
+		});
+		table.getActionMap().put("Izquierda", new AbstractAction() {
+	        @Override
+	        public void actionPerformed(ActionEvent ae) {
+	            //do something on JTable enter pressed
+	        }
+		});
+		table.getActionMap().put("Derecha", new AbstractAction() {
+	        @Override
+	        public void actionPerformed(ActionEvent ae) {
+	            //do something on JTable enter pressed
+	        }
+		});
+		//##########################################//
+		//CANCELACION DE TABULADOR
+		//##########################################//	
+		table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), "Tab");
+		table.getActionMap().put("Tab", new AbstractAction() {
+		        @Override
+		        public void actionPerformed(ActionEvent ae) {
+		            //do something on JTable enter pressed
+		        }
+		});
+	}
 //##########################################//
 //FIN DE LA CLASE TABLA
 //##########################################//	
@@ -641,3 +702,74 @@ public class Tabla {
 	//KY6DHY5K
 
 	//R55ESXSNEJ45QPEQ
+
+//##########################################//
+		//CANCELACION DE CTRL+ALGO
+		//##########################################//	
+		//table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK), "Deshacer");
+		//table.getActionMap().clear();
+		//table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK), "Rehacer");
+		/*table.getActionMap().put("Rehacer", new AbstractAction() {
+		        @Override
+		        public void actionPerformed(ActionEvent ae) {
+		            //do something on JTable enter pressed
+		        }
+		});*/
+		/*table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK), "Copiar");
+		table.getActionMap().remove("Copiar");
+		table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK), "Pegar");
+		/*table.getActionMap().put("Pegar", new AbstractAction() {
+		        @Override
+		        public void actionPerformed(ActionEvent ae) {
+		            //do something on JTable enter pressed
+		        }
+		});*/
+		//table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK), "Cortar");
+		/*table.getActionMap().put("Cortar", new AbstractAction() {
+		        @Override
+		        public void actionPerformed(ActionEvent ae) {
+		            //do something on JTable enter pressed
+		        }
+		});*/
+		/*table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, ActionEvent.CTRL_MASK), "+");
+		table.getActionMap().put("+", new AbstractAction() {
+		        @Override
+		        public void actionPerformed(ActionEvent ae) {
+		            //do something on JTable enter pressed
+		        }
+		});
+		table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, ActionEvent.CTRL_MASK), "-");
+		table.getActionMap().put("-", new AbstractAction() {
+		        @Override
+		        public void actionPerformed(ActionEvent ae) {
+		            //do something on JTable enter pressed
+		        }
+		});
+		table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, ActionEvent.CTRL_MASK), "+");
+		table.getActionMap().put("+", new AbstractAction() {
+		        @Override
+		        public void actionPerformed(ActionEvent ae) {
+		            //do something on JTable enter pressed
+		        }
+		});
+		table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK), "-");
+		table.getActionMap().put("-", new AbstractAction() {
+		        @Override
+		        public void actionPerformed(ActionEvent ae) {
+		            //do something on JTable enter pressed
+		        }
+		});
+		table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK), "Nueva");
+		table.getActionMap().put("Nueva", new AbstractAction() {
+		        @Override
+		        public void actionPerformed(ActionEvent ae) {
+		            //do something on JTable enter pressed
+		        }
+		});
+		table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_H, ActionEvent.CTRL_MASK), "Ayuda");
+		table.getActionMap().put("Ayuda", new AbstractAction() {
+		        @Override
+		        public void actionPerformed(ActionEvent ae) {
+		            //do something on JTable enter pressed
+		        }
+		});*/

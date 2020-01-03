@@ -1,10 +1,13 @@
 package hoja;
 
+import javax.swing.AbstractAction;
+
 //##########################################//
 //IMPORT DE CLASES Y COMPLEMENTOS
 //##########################################//
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -16,6 +19,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -29,6 +33,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -69,6 +75,7 @@ public class Ventana extends JFrame{
 	static int vista = 2;
 	int filasTabla, columnasTabla;
 	static boolean hayTabla;
+	String portapapeles = null;
 
 	//##########################################//
 	//METODO CONSTRUCTOR DE LA CLASE
@@ -110,8 +117,10 @@ public class Ventana extends JFrame{
 				archivo = new JMenu("Archivo");
 				//--------------------------------------//
 					crear = new JMenuItem("Nueva Hoja");
+					crear.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
 					cargar = new JMenuItem("Abrir");
 					archivar = new JMenuItem("Guardar");
+					archivar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK));
 					archivarNuevo = new JMenuItem("Guardar como");
 				//--------------------------------------//		
 				archivo.add(crear);
@@ -132,10 +141,15 @@ public class Ventana extends JFrame{
 				editar = new JMenu("Editar");
 				//--------------------------------------//
 					deshacer = new JMenuItem("Deshacer");
+					//deshacer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
 					rehacer = new JMenuItem("Rehacer");
+					//rehacer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK));
 					copiar = new JMenuItem("Copiar");
+					//copiar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
 					cortar = new JMenuItem("Cortar");
+					//cortar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
 					pegar = new JMenuItem("Pegar");
+					//pegar.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK));
 				//--------------------------------------//
 				editar.add(copiar);
 				editar.add(pegar);
@@ -185,7 +199,9 @@ public class Ventana extends JFrame{
 				zoom = new JMenu("Zoom");
 				//--------------------------------------//
 					mas = new JMenuItem("(+) Zoom");
+					mas.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_PLUS, ActionEvent.CTRL_MASK));
 					menos = new JMenuItem("(-) Zoom");
+					menos.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, ActionEvent.CTRL_MASK));
 				//--------------------------------------//
 				zoom.add(mas);
 				zoom.add(menos);
@@ -199,6 +215,7 @@ public class Ventana extends JFrame{
 				ayuda = new JMenu("Ayuda");
 				//--------------------------------------//
 					tutorial = new JMenuItem("Tutorial");
+					tutorial.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, ActionEvent.CTRL_MASK));
 					acercaDe = new JMenuItem("Acerca de...");
 				//--------------------------------------//
 				ayuda.add(tutorial);
@@ -517,6 +534,56 @@ public class Ventana extends JFrame{
 				}
 			}
 		});
+		//##########################################//
+		//METODO COPIAR, PEGAR Y CORTAR
+		//##########################################//
+		copiar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent args) {
+				int rowIndex = tabla.getTable().getSelectedRow();
+				int colIndex = tabla.getTable().getSelectedColumn();
+				
+				if(rowIndex ==0 || colIndex==0) {
+					JOptionPane.showMessageDialog(new JFrame(), "Ninguna casilla seleccionada para copiar", "Fallo de Tabla", JOptionPane.ERROR_MESSAGE);
+				}else {
+					portapapeles = tabla.getTable().getValueAt(rowIndex, colIndex).toString();
+					System.out.println("Texto Copiado = "+ portapapeles);
+				}
+			}
+		});
+		pegar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent args) {
+				int rowIndex = tabla.getTable().getSelectedRow();
+				int colIndex = tabla.getTable().getSelectedColumn();
+				
+				if(portapapeles == null) {
+					JOptionPane.showMessageDialog(new JFrame(), "No hay nada en el portapapeles para pegar", "Fallo de Tabla", JOptionPane.ERROR_MESSAGE);
+				}else if(rowIndex ==0 || colIndex==0) {
+					JOptionPane.showMessageDialog(new JFrame(), "Ninguna casilla seleccionada para pegar", "Fallo de Tabla", JOptionPane.ERROR_MESSAGE);
+				}else {
+					tabla.getTable().setValueAt(portapapeles,rowIndex, colIndex);
+					System.out.println("Texto Pegado = "+ portapapeles);
+					tabla.updateCell(rowIndex, colIndex);
+				}
+			}
+		});
+		cortar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent args) {
+				int rowIndex = tabla.getTable().getSelectedRow();
+				int colIndex = tabla.getTable().getSelectedColumn();
+				
+				if(rowIndex ==0 || colIndex==0) {
+					JOptionPane.showMessageDialog(new JFrame(), "Ninguna casilla seleccionada para cortar", "Fallo de Tabla", JOptionPane.ERROR_MESSAGE);
+				}else {
+					portapapeles = tabla.getTable().getValueAt(rowIndex, colIndex).toString();
+					tabla.getTable().setValueAt("0",rowIndex, colIndex);
+					System.out.println("Texto Cortado = "+ portapapeles);
+					tabla.updateCell(rowIndex, colIndex);
+				}
+			}
+		});
 		
 		//##########################################//
 		//CONFIGURACION DE LA TABLA
@@ -528,6 +595,7 @@ public class Ventana extends JFrame{
 			tabla = new Tabla(filasTabla, columnasTabla);
 			tabla.guardarPrimeraModificacion(); //PRUEBA DEL METODO DESHACER ---------------------------------------------------------------
 			tabla.getRender().setHorizontalAlignment(SwingConstants.CENTER);
+			tabla.createKeybindings(tabla.getTable());
 				//##########################################//
 				//LISTENER PARA PULSACIONES DE LA TABLA
 				//##########################################//
