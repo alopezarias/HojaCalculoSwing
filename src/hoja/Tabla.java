@@ -7,12 +7,10 @@ import java.awt.event.KeyEvent;
 //##########################################//
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.NoSuchElementException;
 
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
@@ -655,121 +653,3 @@ public class Tabla {
 //FIN DE LA CLASE TABLA
 //##########################################//	
 }
-
-/*public void deshacer() throws TableException{
-		try {
-			Object estado = colaDeshacer.poll();
-
-			if(estado instanceof Casilla) {
-				Casilla casilla = (Casilla) estado;
-				if(tabla.getValueAt(casilla.getFila(), casilla.getCol()).toString().equals(casilla.getCont().toString())) {
-					deshacer();
-				}else {
-					this.excel[casilla.getFila()][casilla.getCol()] = casilla.getCont();
-					updateCell(casilla.getFila(), casilla.getCol());
-				}
-			}else if(estado instanceof String[][]){
-				this.excel = (String[][]) estado;
-				updateTable();
-			}else if(estado==null){
-				throw new TableException("No hay nada en la cola de deshacer");
-			}else {	
-				//colaDeshacer.push(estado);
-				throw new TableException("Se ha encolado un objeto que no es correcto, revisa el metodo encolar");
-			}
-		}catch(NoSuchElementException e) {
-			throw new TableException("No se pueden deshacer más acciones");
-		}
-	}
-	
-	public void meterColaDeshacer() {
-		colaDeshacer.push(this.excel);
-	}
-	
-	public void meterColaDeshacer(int fil, int col) {
-		Casilla nueva = new Casilla(this.excel[fil][col], fil, col);
-		colaDeshacer.push(nueva);
-	}
-	
-	public boolean isLastCell(int fil, int col) {
-		boolean prueba = false;
-		if(fil==this.filas && col==this.columnas) {
-			prueba=true;
-		}
-		return prueba;
-	}*/
-
-	//KY6DHY5K
-
-	//R55ESXSNEJ45QPEQ
-
-//##########################################//
-		//CANCELACION DE CTRL+ALGO
-		//##########################################//	
-		//table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK), "Deshacer");
-		//table.getActionMap().clear();
-		//table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, ActionEvent.CTRL_MASK), "Rehacer");
-		/*table.getActionMap().put("Rehacer", new AbstractAction() {
-		        @Override
-		        public void actionPerformed(ActionEvent ae) {
-		            //do something on JTable enter pressed
-		        }
-		});*/
-		/*table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK), "Copiar");
-		table.getActionMap().remove("Copiar");
-		table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK), "Pegar");
-		/*table.getActionMap().put("Pegar", new AbstractAction() {
-		        @Override
-		        public void actionPerformed(ActionEvent ae) {
-		            //do something on JTable enter pressed
-		        }
-		});*/
-		//table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK), "Cortar");
-		/*table.getActionMap().put("Cortar", new AbstractAction() {
-		        @Override
-		        public void actionPerformed(ActionEvent ae) {
-		            //do something on JTable enter pressed
-		        }
-		});*/
-		/*table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, ActionEvent.CTRL_MASK), "+");
-		table.getActionMap().put("+", new AbstractAction() {
-		        @Override
-		        public void actionPerformed(ActionEvent ae) {
-		            //do something on JTable enter pressed
-		        }
-		});
-		table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_SUBTRACT, ActionEvent.CTRL_MASK), "-");
-		table.getActionMap().put("-", new AbstractAction() {
-		        @Override
-		        public void actionPerformed(ActionEvent ae) {
-		            //do something on JTable enter pressed
-		        }
-		});
-		table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_ADD, ActionEvent.CTRL_MASK), "+");
-		table.getActionMap().put("+", new AbstractAction() {
-		        @Override
-		        public void actionPerformed(ActionEvent ae) {
-		            //do something on JTable enter pressed
-		        }
-		});
-		table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_G, ActionEvent.CTRL_MASK), "-");
-		table.getActionMap().put("-", new AbstractAction() {
-		        @Override
-		        public void actionPerformed(ActionEvent ae) {
-		            //do something on JTable enter pressed
-		        }
-		});
-		table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK), "Nueva");
-		table.getActionMap().put("Nueva", new AbstractAction() {
-		        @Override
-		        public void actionPerformed(ActionEvent ae) {
-		            //do something on JTable enter pressed
-		        }
-		});
-		table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_H, ActionEvent.CTRL_MASK), "Ayuda");
-		table.getActionMap().put("Ayuda", new AbstractAction() {
-		        @Override
-		        public void actionPerformed(ActionEvent ae) {
-		            //do something on JTable enter pressed
-		        }
-		});*/

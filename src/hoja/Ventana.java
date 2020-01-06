@@ -1,13 +1,12 @@
 package hoja;
 
-import javax.swing.AbstractAction;
+
 
 //##########################################//
 //IMPORT DE CLASES Y COMPLEMENTOS
 //##########################################//
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,27 +16,19 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
-import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
@@ -55,6 +46,10 @@ import java.util.Scanner;
 //##########################################//
 public class Ventana extends JFrame{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	//##########################################//
 	//DECLARACION DE LOS OBJETOS A USAR
 	//##########################################//
@@ -482,7 +477,7 @@ public class Ventana extends JFrame{
 														   "Tutorial de Uso", JOptionPane.INFORMATION_MESSAGE);
 				JOptionPane.showMessageDialog(new JFrame(), "Final del tutorial\n"
 						   								  + "\n"
-						   								  + "Una veintz vistas todas las funcionalidades ya puedes\n"
+						   								  + "Una vez vistas todas las funcionalidades ya puedes\n"
 						   								  + "sacarle el máximo rendimiento a la Hoja de Cálculo\n", 
 														   "Tutorial de Uso", JOptionPane.INFORMATION_MESSAGE);
 				

@@ -1,5 +1,8 @@
 package hoja;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 public class Main {
 	
 	static ContadorVentanas contador = new ContadorVentanas();
@@ -14,13 +17,13 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String [] args) {
+		JOptionPane.showMessageDialog(new JFrame(), "RECUERDA: NO PUEDE HABER CASILLAS VACÍAS\nSI QUIERES UNA CASILLA VACÍA, COLOCA UN \"0\" EN ELLA", "ANTES DE EMPEZAR...", JOptionPane.INFORMATION_MESSAGE);
 		Ventana v = new Ventana(0, 0, true, contador);
-		int num = contador.getValue();
-		/*System.out.println("Ventanas: "+contador.getValue());
 		while(contador.getValue()!=0) {
 			System.out.println("Ventanas: "+contador.getValue());
 		}
 		System.out.println("Ventanas: "+contador.getValue());
-			System.exit(0);*/
+		v.dispose();
+		System.exit(0);
 	}
 }
