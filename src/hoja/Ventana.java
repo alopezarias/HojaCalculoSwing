@@ -56,7 +56,7 @@ public class Ventana extends JFrame{
 	ContadorVentanas ventanas;
 	JFrame ventana;
 	JPanel panel, inferior;
-	JButton calcula;
+	JButton calcula, limpiar;
 	JLabel celda, flecha;
 	JTextField contenido;
 	JMenuBar barramenu;
@@ -675,11 +675,13 @@ public class Ventana extends JFrame{
 		contenido = new JTextField("Contenido de la casilla");
 		contenido.setEditable(false);
 		calcula = new JButton(" CALCULAR ");
+		limpiar = new JButton("BORRAR TODO");
 		
 		inferior.add(celda);
 		inferior.add(flecha);
 		inferior.add(contenido);
 		inferior.add(calcula);
+		inferior.add(limpiar);
 	
 		//##########################################//
 		//LISTENER A CALCULAR
@@ -690,11 +692,27 @@ public class Ventana extends JFrame{
 				if(hayTabla){
 					try{
 						tabla.calcular();
+						tabla.guardarModificacion();
 					}catch(TableException e) {
 						JOptionPane.showMessageDialog(new JFrame(), e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 					}
 				}else{
 					JOptionPane.showMessageDialog(new JFrame(), "No hay tabla sobre la que calcular", "ERROR", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		
+		//##########################################//
+		//LISTENER A LIMPIAR
+		//##########################################//
+		limpiar.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent args) {
+				if(hayTabla){
+					tabla.vaciar();
+					tabla.guardarModificacion();
+				}else{
+					JOptionPane.showMessageDialog(new JFrame(), "No hay tabla que vaciar", "ERROR", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});

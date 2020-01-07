@@ -137,6 +137,15 @@ public class Tabla {
 		try{
 			String resultado = nuevo.excel(toCalculate());
 			toTable(resultado, filas, columnas);
+			this.updateTable();
+			String[][] estado = new String[filas+1][columnas+1];
+			
+			for(int i=0; i<=filas; i++) {
+				for(int j=0; j<=columnas; j++) {
+					estado[i][j] = this.excel[i][j];
+				}
+			}
+			this.guardarEnColaDeshacer(estado);
 
 		}catch(Exception e) {
 			throw new TableException("Error en el calculo de la tabla");
@@ -185,13 +194,6 @@ public class Tabla {
 	*/
 	public String toCalculate() {
 		StringBuffer hoja = new StringBuffer();
-		
-		/*for(int i=1; i<=filas; i++) {
-			for(int j=1; j<=columnas; j++) {
-				hoja.append(excel[i][j]);
-				hoja.append(";");
-			}
-		}*/
 
 		for(int i=1; i<=filas; i++) {
 			for(int j=1; j<=columnas; j++) {
@@ -214,20 +216,13 @@ public class Tabla {
 	public void toTable(String contenido, int fil, int col) {
 
 		System.out.println(contenido);
-		/*String[] casillas = contenido.split(";");
-		for(int i=1; i<=fil; i++) {
-			for(int j=1; j<=col; j++) {
-				this.excel[i][j] = casillas[(j-1)+(i-1)*col];
-				updateCell(i, j);
-			}
-		}*/
 
 		String [] filas = contenido.split("\n");
 		for(int i=0; i<fil; i++){
 			String [] elementos = filas[i].split(" ");
 			for(int j=0; j<col; j++){
 				this.excel[i+1][j+1] = elementos[j];
-				updateCell(i+1, j+1);
+				//updateCell(i+1, j+1);
 			}
 		}	
 	}
@@ -348,14 +343,14 @@ public class Tabla {
 				}*/
 				
 				//System.out.println("el estado a guardar NOOOOO es el mismo");
-			}/*else{
+			}else{
 				//accionesDeshacer.push(estado);
 				this.guardarEnColaDeshacer(estado);
 				//System.out.println("el estado a guardar es el mismo");
-			}*/
+			}
 			
 			//System.out.println("Tamanyo del ciclo = "+ this.contadorCicloDeshacer);
-			if(this.ciclo = true && this.variableEspecial==1) {
+			if(this.ciclo == true && this.variableEspecial==1) {
 				//System.out.println("\nEl ciclo esta abierto");
 				this.contadorCicloDeshacer = accionesDeshacer.size()+accionesRehacer.size();
 				ciclo = false;
@@ -593,6 +588,16 @@ public class Tabla {
 			cadena.append("\n");
 		}
 		return cadena.toString();
+	}
+	
+	public void vaciar() {
+		for(int i=0; i<=filas; i++) {
+			for(int j=0; j<=columnas; j++) {
+				this.excel[i][j] = "0";
+			}
+		}
+		this.updateTable();
+		this.guardarModificacion();
 	}
 	
 	public void createKeybindings(JTable table) {
