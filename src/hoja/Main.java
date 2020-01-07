@@ -17,7 +17,7 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String [] args) {
-		JOptionPane.showMessageDialog(new JFrame(), "RECUERDA: NO PUEDE HABER CASILLAS VACÍAS\nSI QUIERES UNA CASILLA VACÍA, COLOCA UN \"0\" EN ELLA", "ANTES DE EMPEZAR...", JOptionPane.INFORMATION_MESSAGE);
+		//JOptionPane.showMessageDialog(new JFrame(), "RECUERDA: NO PUEDE HABER CASILLAS VACÍAS\nSI QUIERES UNA CASILLA VACÍA, COLOCA UN \"0\" EN ELLA", "ANTES DE EMPEZAR...", JOptionPane.INFORMATION_MESSAGE);
 
 		Ventana v = new Ventana(0, 0, true, contador);
 		while(contador.getValue()!=0) {

@@ -59,7 +59,7 @@ public class Tabla {
 		String [] fila = new String[col+1];
 		for(int j=0; j<=col; j++) {
 			modelo.addColumn(" ");
-			fila[j] = " ";
+			fila[j] = "";
 		}
 		
 		//##########################################//
@@ -313,7 +313,15 @@ public class Tabla {
 			}
 			
 			if(accionesDeshacer.size()!=0) {
+				
 				estado = this.sacarDeColaDeshacer();
+				
+				/*if(!isEquals(nuevo, estado)){
+					
+					this.guardarEnColaDeshacer(estado);
+					this.guardarEnColaDeshacer(nuevo);
+				}*/
+				
 			}else {
 				this.guardarEnColaDeshacer(nuevo);
 			}
@@ -325,10 +333,10 @@ public class Tabla {
 
 			}else{
 				
-				this.guardarEnColaDeshacer(estado);
+				if(estado!=null)
+					this.guardarEnColaDeshacer(estado);
 				
 			}
-			
 			
 			if(this.ciclo == true && this.variableEspecial==1) {
 				
@@ -595,6 +603,9 @@ public class Tabla {
 		return cadena.toString();
 	}
 	
+	//##########################################//
+	//LIMPIAR TABLA
+	//##########################################//
 	/**
 	 * Metodo para vaciar el excel y ponerlo todo a 0
 	 */
@@ -605,7 +616,25 @@ public class Tabla {
 			}
 		}
 		this.updateTable();
-		this.guardarModificacion();
+		//this.guardarModificacion();
+	}
+	
+	//##########################################//
+	//RELLENAR CON CEROS
+	//##########################################//
+	/**
+	 * Metodo que rellena con ceros las posiciones vacías de las casillas
+	 */
+	public void rellenarConCeros() {
+		for(int i=0; i<=filas; i++) {
+			for(int j=0; j<=columnas; j++) {
+				if(this.excel[i][j].contentEquals("")){
+					this.excel[i][j] = "0";
+				}
+			}
+		}
+		this.updateTable();
+		//this.guardarModificacion();
 	}
 	
 	/**

@@ -51,7 +51,7 @@ public class Ventana extends JFrame{
 	ContadorVentanas ventanas;
 	JFrame ventana;
 	JPanel panel, inferior;
-	JButton calcula, limpiar;
+	JButton calcula, limpiar, rellenarCeros;
 	JLabel celda, flecha;
 	JTextField contenido;
 	JMenuBar barramenu;
@@ -299,7 +299,10 @@ public class Ventana extends JFrame{
 						Ventana v = new Ventana(filas, columnas, false, ventanas);
 						v.tabla.toTable(content.toString(), filas, columnas);
 						v.tabla.updateTable();
-						
+						//Para que no permita deshacer cuando se ha abierto un fichero nuevo
+						v.tabla.accionesDeshacer.clear();
+						v.tabla.guardarPrimeraModificacion();
+						v.tabla.guardarModificacion();
 						
 						//Cuando abro un archivo permito la ventana de guardar
 						archivar.setEnabled(true);
@@ -677,12 +680,14 @@ public class Ventana extends JFrame{
 		contenido.setEditable(false);
 		calcula = new JButton(" CALCULAR ");
 		limpiar = new JButton("BORRAR TODO");
+		rellenarCeros = new JButton("Rellenar con Ceros");
 		
 		inferior.add(celda);
 		inferior.add(flecha);
 		inferior.add(contenido);
 		inferior.add(calcula);
 		inferior.add(limpiar);
+		inferior.add(rellenarCeros);
 	
 		//##########################################//
 		//LISTENER A CALCULAR
@@ -695,7 +700,8 @@ public class Ventana extends JFrame{
 						tabla.calcular();
 						tabla.guardarModificacion();
 					}catch(TableException e) {
-						JOptionPane.showMessageDialog(new JFrame(), e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(new JFrame(), e.getMessage() + "\nRevisa que las casillas vacias tengan un cero\nPara rellenar automático"
+								+ " pulsa sobre Rellenar con Ceros", "ERROR", JOptionPane.ERROR_MESSAGE);
 					}
 				}else{
 					JOptionPane.showMessageDialog(new JFrame(), "No hay tabla sobre la que calcular", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -711,6 +717,21 @@ public class Ventana extends JFrame{
 			public void actionPerformed(ActionEvent args) {
 				if(hayTabla){
 					tabla.vaciar();
+					tabla.guardarModificacion();
+				}else{
+					JOptionPane.showMessageDialog(new JFrame(), "No hay tabla que vaciar", "ERROR", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		
+		//##########################################//
+		//LISTENER A RELLENAR CON 0
+		//##########################################//
+		rellenarCeros.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent args) {
+				if(hayTabla){
+					tabla.rellenarConCeros();
 					tabla.guardarModificacion();
 				}else{
 					JOptionPane.showMessageDialog(new JFrame(), "No hay tabla que vaciar", "ERROR", JOptionPane.ERROR_MESSAGE);
