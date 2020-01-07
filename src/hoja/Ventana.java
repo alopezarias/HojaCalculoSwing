@@ -299,12 +299,17 @@ public class Ventana extends JFrame{
 					try {
 						filas = Integer.parseInt(coord[0]);
 						columnas = Integer.parseInt(coord[1]);
+						
+						comprobarArchivo(filas, columnas, content.toString());
 
 						Ventana v = new Ventana(filas, columnas, false, ventanas);
 						v.tabla.toTable(content.toString(), filas, columnas);
 						
 						//Cuando abro un archivo permito la ventana de guardar
 						archivar.setEnabled(true);
+					}catch(TableException e) {
+						fichero = null;
+						JOptionPane.showMessageDialog(new JFrame(),  e.getMessage(), "Fallo de lectura de Tabla", JOptionPane.ERROR_MESSAGE);
 					}catch(Exception e) {
 						fichero = null;
 						JOptionPane.showMessageDialog(new JFrame(),  "Ha habido un problema leyendo las coordenadas de la tabla", "Fallo de lectura de Tabla", JOptionPane.ERROR_MESSAGE);
@@ -777,6 +782,49 @@ public class Ventana extends JFrame{
 			letra = (char) ((char) (column%26)+'@')+letra;
 		}
 		return letra;
+	}
+	
+	/**
+	 * Metodo para comprobar que los archivos estan en buen formato
+	 * @throws TableException  
+	 */
+	public void comprobarArchivo(int fil, int col, String contenido) throws TableException{
+		
+		
+		
+		String[] filas = contenido.split("\n");
+		if(filas.length > fil) {
+			throw new TableException("Sobran filas en el archivo");
+		}else if(filas.length < fil) {
+			throw new TableException("Faltan filas en el archivo");
+		}else {
+			
+			for(int i=0; i<fil; i++) {
+				if(filas[i]!=null) {
+					String[] elementosColumna = filas[i].split(" ");
+					
+					if(elementosColumna.length > col) {
+						throw new TableException("Sobran columnas en el archivo");
+					}else if(elementosColumna.length < col) {
+						throw new TableException("Faltan columnas en el archivo");
+					}else {
+						
+						for(int j=0; j<col; j++) {
+							if(elementosColumna[j]==null) {
+								throw new TableException("Error al leer la columna " + i + ".\"");
+							}
+						}
+						
+					}
+					
+				}else {
+					throw new TableException("Error al leer la fila " + i + ".");
+				}
+			}
+			
+		}
+		
+		
 	}
 //##########################################//
 //FIN DE LA CLASE VENTANA
