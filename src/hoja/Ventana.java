@@ -304,6 +304,8 @@ public class Ventana extends JFrame{
 
 						Ventana v = new Ventana(filas, columnas, false, ventanas);
 						v.tabla.toTable(content.toString(), filas, columnas);
+						v.tabla.updateTable();
+						
 						
 						//Cuando abro un archivo permito la ventana de guardar
 						archivar.setEnabled(true);
@@ -789,8 +791,6 @@ public class Ventana extends JFrame{
 	 * @throws TableException  
 	 */
 	public void comprobarArchivo(int fil, int col, String contenido) throws TableException{
-		
-		
 		
 		String[] filas = contenido.split("\n");
 		if(filas.length > fil) {
