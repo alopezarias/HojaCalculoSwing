@@ -138,14 +138,15 @@ public class Tabla {
 			String resultado = nuevo.excel(toCalculate());
 			toTable(resultado, filas, columnas);
 			this.updateTable();
-			String[][] estado = new String[filas+1][columnas+1];
+			/*String[][] estado = new String[filas+1][columnas+1];
 			
 			for(int i=0; i<=filas; i++) {
 				for(int j=0; j<=columnas; j++) {
 					estado[i][j] = this.excel[i][j];
 				}
 			}
-			this.guardarEnColaDeshacer(estado);
+			this.guardarEnColaDeshacer(estado);*/
+			this.guardarModificacion();
 
 		}catch(Exception e) {
 			throw new TableException("Error en el calculo de la tabla");
