@@ -166,7 +166,6 @@ public class Tabla {
 	public MiModelo getModel() {
 		return this.modelo;
 	}
-	
 	//##########################################//
 	//METODOS TRANSFORMADORES DE LA TABLA
 	//##########################################//

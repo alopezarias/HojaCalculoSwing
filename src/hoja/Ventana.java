@@ -371,6 +371,7 @@ public class Ventana extends JFrame{
 			public void actionPerformed(ActionEvent args) {
 				tabla.getRender().setHorizontalAlignment(SwingConstants.LEFT);
 				tabla.updateTable();
+				tabla.getTable().repaint();
 			}
 		});
 		centrar.addActionListener(new ActionListener() {
@@ -378,6 +379,7 @@ public class Ventana extends JFrame{
 			public void actionPerformed(ActionEvent args) {	
 				tabla.getRender().setHorizontalAlignment(SwingConstants.CENTER);
 				tabla.updateTable();
+				tabla.getTable().repaint();
 			}
 		});
 		derecha.addActionListener(new ActionListener() {
@@ -385,6 +387,7 @@ public class Ventana extends JFrame{
 			public void actionPerformed(ActionEvent args) {
 				tabla.getRender().setHorizontalAlignment(SwingConstants.RIGHT);
 				tabla.updateTable();
+				tabla.getTable().repaint();
 			}
 		});
 		//##########################################//
@@ -605,7 +608,16 @@ public class Ventana extends JFrame{
 						tabla.getTable().repaint();
 						int rowIndex = tabla.getTable().getSelectedRow();
 						int colIndex = tabla.getTable().getSelectedColumn();
-						celda.setText("[ "+pasarNumLetra(colIndex) + rowIndex  +" ]");
+						if(rowIndex==0 && colIndex==0) {
+							celda.setText("Celda Oscura sin Contenido");
+						}else if(colIndex ==0) {
+							celda.setText("Fila [ " + rowIndex  +" ]");
+						}else if(rowIndex ==0) {
+							celda.setText("Columna [ " + pasarNumLetra(colIndex) +" ]");
+						}else {
+							celda.setText("[ "+pasarNumLetra(colIndex) + rowIndex  +" ]");
+						}
+						
 						celda.updateUI();
 						contenido.setText((tabla.getTable().getValueAt(rowIndex,colIndex)).toString());
 					}
@@ -621,10 +633,9 @@ public class Ventana extends JFrame{
 					 * la matriz de contenido dentro de la misma tabla
 					 */
 					public void tableChanged(TableModelEvent arg0) {
-						
-						System.out.println("Editada la casilla (" + arg0.getColumn() + ", " + arg0.getLastRow() + ")");
-						tabla.updateExcel(arg0.getLastRow(), arg0.getColumn());
-						tabla.guardarModificacion();//PRUEBA DEL METODO DESHACER ---------------------------------------------------------------
+							System.out.println("Editada la casilla (" + arg0.getColumn() + ", " + arg0.getLastRow() + ")");
+							tabla.updateExcel(arg0.getLastRow(), arg0.getColumn());
+							tabla.guardarModificacion();//PRUEBA DEL METODO DESHACER ---------------------------------------------------------------
 					}
 				});
 			
@@ -662,6 +673,7 @@ public class Ventana extends JFrame{
 		celda = new JLabel("[CELDA]");
 		flecha = new JLabel("  -->  ");
 		contenido = new JTextField("Contenido de la casilla");
+		contenido.setEditable(false);
 		calcula = new JButton(" CALCULAR ");
 		
 		inferior.add(celda);
@@ -720,6 +732,13 @@ public class Ventana extends JFrame{
 				resultado = Integer.parseInt(JOptionPane.showInputDialog("NUMERO DE "+ type +":"));
 				if(resultado<=0) {
 					JOptionPane.showMessageDialog(null, "EL NUMERO DE "+ type +" DEBE SER MAYOR QUE 0");
+					resultado = -1;
+				}
+				if(type.contentEquals("COLUMNAS") && resultado>18278) {
+					JOptionPane.showMessageDialog(null, "EL NUMERO DE "+ type +" NO PUEDE EXCEDER LAS 18278");
+					resultado = -1;
+				}else if(resultado>999){
+					JOptionPane.showMessageDialog(null, "EL NUMERO DE "+ type +" NO PUEDE EXCEDER LAS 999");
 					resultado = -1;
 				}
 			}catch(Exception e) {
