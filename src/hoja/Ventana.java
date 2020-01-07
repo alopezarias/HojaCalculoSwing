@@ -1,7 +1,5 @@
 package hoja;
 
-
-
 //##########################################//
 //IMPORT DE CLASES Y COMPLEMENTOS
 //##########################################//
@@ -46,9 +44,6 @@ import java.util.Scanner;
 //##########################################//
 public class Ventana extends JFrame{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	//##########################################//
 	//DECLARACION DE LOS OBJETOS A USAR
@@ -91,7 +86,6 @@ public class Ventana extends JFrame{
 		//##########################################//
 		//CONFIGURACION DEL BOTON CERRAR
 		//##########################################//
-		//setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		
 		ventana.addWindowListener( new WindowAdapter() {
 			@Override
@@ -598,7 +592,7 @@ public class Ventana extends JFrame{
 			hayTabla = true;
 			//Creo la tabla y todo lo referente a ella
 			tabla = new Tabla(filasTabla, columnasTabla);
-			tabla.guardarPrimeraModificacion(); //PRUEBA DEL METODO DESHACER ---------------------------------------------------------------
+			tabla.guardarPrimeraModificacion(); 
 			tabla.getRender().setHorizontalAlignment(SwingConstants.CENTER);
 			tabla.createKeybindings(tabla.getTable());
 				//##########################################//
@@ -642,7 +636,7 @@ public class Ventana extends JFrame{
 					public void tableChanged(TableModelEvent arg0) {
 							System.out.println("Editada la casilla (" + arg0.getColumn() + ", " + arg0.getLastRow() + ")");
 							tabla.updateExcel(arg0.getLastRow(), arg0.getColumn());
-							tabla.guardarModificacion();//PRUEBA DEL METODO DESHACER ---------------------------------------------------------------
+							tabla.guardarModificacion();
 					}
 				});
 			

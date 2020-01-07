@@ -8,14 +8,15 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
 public class MiRender extends DefaultTableCellRenderer{
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	static int [] vertical = null;
 	static int [] horizontal = null;
 	
+	/**
+	 * Con este metodo puedo controlar donde me encuentro en mi tabla y conseguir un formato
+	 * de colores y estilo para la misma.
+	 */
 	public Component getTableCellRendererComponent(JTable table,
 			Object value, boolean isSelected, boolean hasFocus, int row,
 			int column) {
@@ -48,13 +49,11 @@ public class MiRender extends DefaultTableCellRenderer{
 		if((vertical!=null && row==vertical[0] && column==vertical[1])) {
 			cell.setBackground(Color.GRAY);
 			cell.setForeground(Color.WHITE);
-			//System.out.println("vertical-->" + vertical[0] + ", " + vertical[1]);
 			vertical=null;
 		}
 		if((horizontal!=null && row==horizontal[0] && column==horizontal[1])) {
 			cell.setBackground(Color.GRAY);
 			cell.setForeground(Color.WHITE);
-			//System.out.println("horizontal-->" + horizontal[0] + ", " + horizontal[1]);
 			horizontal=null;
 		}
 		

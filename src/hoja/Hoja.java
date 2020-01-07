@@ -8,9 +8,13 @@ public class Hoja{;
 	private int col;
 	private Casilla hoja[][];
 	
+	/**
+	 * Constructor de la clase Hoja vacío
+	 */
 	public Hoja() {
 		
 	}
+	
 	/**
 	 * Constructor de la clase Hoja
 	 * @param filas Numero de filas que contendrá

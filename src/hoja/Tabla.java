@@ -59,7 +59,7 @@ public class Tabla {
 		String [] fila = new String[col+1];
 		for(int j=0; j<=col; j++) {
 			modelo.addColumn(" ");
-			fila[j] = "0";
+			fila[j] = " ";
 		}
 		
 		//##########################################//
@@ -104,7 +104,6 @@ public class Tabla {
 			tabla.getColumnModel().getColumn(a).setMinWidth(150);
 		}
 		tabla.setRowHeight(21);
-		//cambioDimensiones(tamanioAncho(2), tamanioAnchoCab(2), tamanioAlto(2), 2);
 		tabla.setFont(new java.awt.Font("Tahoma", 0, 15));
 
 		//##########################################//
@@ -138,14 +137,6 @@ public class Tabla {
 			String resultado = nuevo.excel(toCalculate());
 			toTable(resultado, filas, columnas);
 			this.updateTable();
-			/*String[][] estado = new String[filas+1][columnas+1];
-			
-			for(int i=0; i<=filas; i++) {
-				for(int j=0; j<=columnas; j++) {
-					estado[i][j] = this.excel[i][j];
-				}
-			}
-			this.guardarEnColaDeshacer(estado);*/
 			this.guardarModificacion();
 
 		}catch(Exception e) {
@@ -223,7 +214,6 @@ public class Tabla {
 			String [] elementos = filas[i].split(" ");
 			for(int j=0; j<col; j++){
 				this.excel[i+1][j+1] = elementos[j];
-				//updateCell(i+1, j+1);
 			}
 		}	
 	}
@@ -265,8 +255,6 @@ public class Tabla {
 		for(int i=1; i<=filas; i++) {
 			for(int j=1; j<=columnas; j++) {
 				updateCell(i, j);
-				//if(!tabla.getValueAt(i, j).toString().contentEquals(excel[i][j].toString()))
-					//tabla.setValueAt(excel[i][j].toString(), i, j);
 			}
 		}
 	}
@@ -284,7 +272,6 @@ public class Tabla {
 			for(int j=1; j<=columnas; j++) {
 				if(!(a[i][j].contentEquals(b[i][j]))) {
 					prueba=false;
-					//System.out.println("No son IGUALEEEEEES");
 					break;
 				}
 			}
@@ -292,7 +279,6 @@ public class Tabla {
 				break;
 			}
 		}
-		//System.out.println("si no he dicho nada, son iguales");
 		return prueba;
 	}
 	
@@ -309,9 +295,8 @@ public class Tabla {
 		}
 		
 		this.guardarEnColaDeshacer(nuevo);
-		
-		//System.out.println("se ha guardado el estado inicial de la tabla");
 	}
+
 	/**
 	 * Metodo que guarda los estados no repetidos de la tabla
 	 */
@@ -328,7 +313,7 @@ public class Tabla {
 			}
 			
 			if(accionesDeshacer.size()!=0) {
-				estado = this.sacarDeColaDeshacer();//accionesDeshacer.poll();
+				estado = this.sacarDeColaDeshacer();
 			}else {
 				this.guardarEnColaDeshacer(nuevo);
 			}
@@ -338,28 +323,24 @@ public class Tabla {
 				this.guardarEnColaDeshacer(estado);
 				this.guardarEnColaDeshacer(nuevo);
 
-				/*if(contadorCicloDeshacer!=0 && (accionesDeshacer.size()+accionesRehacer.size()!=contadorCicloDeshacer)){
-					accionesRehacer.clear();
-					contadorCicloDeshacer=0;
-				}*/
-				
-				//System.out.println("el estado a guardar NOOOOO es el mismo");
 			}else{
-				//accionesDeshacer.push(estado);
+				
 				this.guardarEnColaDeshacer(estado);
-				//System.out.println("el estado a guardar es el mismo");
+				
 			}
 			
-			//System.out.println("Tamanyo del ciclo = "+ this.contadorCicloDeshacer);
+			
 			if(this.ciclo == true && this.variableEspecial==1) {
-				//System.out.println("\nEl ciclo esta abierto");
+				
 				this.contadorCicloDeshacer = accionesDeshacer.size()+accionesRehacer.size();
 				ciclo = false;
 				this.variableEspecial++;
+
 			}else if(this.contadorCicloDeshacer!=0) {
+
 				if(this.contadorCicloDeshacer != accionesDeshacer.size()+accionesRehacer.size()) {
+					
 					accionesRehacer.clear();
-					//System.out.println("\nVaciada la cola de rehacer");
 					ciclo = false;
 					this.variableEspecial = 0;
 				}
@@ -369,26 +350,37 @@ public class Tabla {
 		}
 	}
 	
+	//##########################################//
+	//METODOS PARA EL ACCESO A LAS COLAS
+	//##########################################//
+	
+	/**
+	 * Metemos un objeto en la cola de deshacer
+	 */
 	public void guardarEnColaDeshacer(String[][] tabla) {
 		this.accionesDeshacer.push(tabla);
-		//System.out.println("Guardado en deshacer = \n" + ExceltoString(tabla));
 	}
 	
+	/**
+	 * Sacamos un objeto de la cola de deshacer
+	 */
 	public String[][] sacarDeColaDeshacer(){
 		String[][] tabla = this.accionesDeshacer.poll();
-		//System.out.println("Sacado de deshacer = \n" + ExceltoString(tabla));
 		return tabla;
 	}
 	
+	/**
+	 * Metemos un objeto en la cola de rehacer
+	 */
 	public void guardarEnColaRehacer(String[][] tabla) {
 		this.accionesRehacer.push(tabla);
-		//System.out.println("Guardado en rehacer = \n" + ExceltoString(tabla));
-		//System.out.println("el estado a guardar es el mismo");
 	}
 	
+	/**
+	 * Sacamos un objeto de la cola de rehacer
+	 */
 	public String[][] sacarDeColaRehacer(){
 		String[][] tabla = this.accionesRehacer.poll();
-		//System.out.println("Sacado de rehacer = \n" + ExceltoString(tabla));
 		return tabla;
 	}
 	
@@ -401,15 +393,14 @@ public class Tabla {
 	 */
 	public void deshacer() throws TableException{
 		
-		//if(accionesDeshacer.size()!=0){
 			try {
-				//accionesRehacer.push(accionesDeshacer.poll());
+				
 				if(accionesDeshacer.size()!=0) {
 					String [][] paraRehacer = this.sacarDeColaDeshacer();
 					String [][] nuevo = null;
 					
 					if(accionesDeshacer.size()!=0) {
-						nuevo = this.sacarDeColaDeshacer();//accionesDeshacer.poll();
+						nuevo = this.sacarDeColaDeshacer();
 						this.guardarEnColaRehacer(paraRehacer);
 						this.ciclo = true;
 						this.variableEspecial++;
@@ -426,15 +417,12 @@ public class Tabla {
 					
 				}
 				updateTable();
-				//System.out.println("Se ha deshecho una accion en la tabla");
+				
 			}catch(Exception e) {
 				throw new TableException("No se pueden deshacer más acciones");
 			}
-		/*}else{
-			JOptionPane.showMessageDialog(new JFrame(), "La cola de deshacer esta vacía", "Fallo de Tabla", JOptionPane.ERROR_MESSAGE);
-		}*/
-		
 	}
+
 	//##########################################//
 	//REHACER
 	//##########################################//
@@ -446,19 +434,15 @@ public class Tabla {
 		
 		if(accionesRehacer.size()!=0){
 			try {
-				//this.excel = accionesRehacer.poll();
-				
-				//contadorCicloDeshacer = accionesDeshacer.size() + accionesRehacer.size();
-
-				String [][] nuevo = this.sacarDeColaRehacer();//accionesDeshacer.poll();
+		
+				String [][] nuevo = this.sacarDeColaRehacer();
 				for(int i=0; i<=filas; i++) {
 					for(int j=0; j<=columnas; j++) {
 						this.excel[i][j] = nuevo[i][j];
 					}
 				}
 				updateTable(); 
-				//System.out.println("Se ha rehecho una accion en la tabla");
-				//guardarModificacion();
+				
 			}catch(Exception e) {
 				throw new TableException("No se pueden rehacer más acciones");
 			}
@@ -483,6 +467,9 @@ public class Tabla {
 		}
 	}
 	
+	/**
+	 * Aqui meto valores en los parametros pedidos para dar formato y tamanio a la tabla
+	 */
 	private void cambioDimensiones(int ancho, int anchoC, int alto, int fuente) {
 		tabla.getColumnModel().getColumn(0).setPreferredWidth(anchoC);
 		tabla.getColumnModel().getColumn(0).setMaxWidth(anchoC);
@@ -562,23 +549,40 @@ public class Tabla {
 		return resultado;
 	}
 	
+	/**
+	 * Consigo el int del tamanio de la fuente
+	 */
 	public static int getTamanioFuente() {
 		return tamanioFuente;
 	}
 	
+	/**
+	 * Consigo un string de la fuente en cuestioin
+	 */
 	public static String getFuente() {
 		return fuente;
 	}
 	
+	/**
+	 * Metodo que cambia una fuente por una dada
+	 */
 	public static void changeFont(String f) {
 		fuente = f;
 	}
 	
+	/**
+	 * Metodo que actualiza la fuente en la tabla en cuestion
+	 */
 	public void cambioFuente() {
 		tabla.setFont(new java.awt.Font(fuente, 0, getTamanioFuente()));
 		updateTable();
 	}
 	
+	/**
+	 * Pasamos el this.excel a un String para poder guardarlo en la cola
+	 * @param excel El this.excel
+	 * @return cadena.toString() El excel en formato cadena de texto
+	 */
 	public String ExceltoString(String[][] excel) {
 		StringBuffer cadena = new StringBuffer();
 		for(int i=0; i<=filas; i++) {
@@ -591,6 +595,9 @@ public class Tabla {
 		return cadena.toString();
 	}
 	
+	/**
+	 * Metodo para vaciar el excel y ponerlo todo a 0
+	 */
 	public void vaciar() {
 		for(int i=0; i<=filas; i++) {
 			for(int j=0; j<=columnas; j++) {
@@ -601,6 +608,9 @@ public class Tabla {
 		this.guardarModificacion();
 	}
 	
+	/**
+	 * Metodo para ignorar ciertos atajos del teclado en la tabla y así ahorrarnos problemas de compatibilidades
+	 */
 	public void createKeybindings(JTable table) {
 		//##########################################//
 		//CANCELACION DE ENTER

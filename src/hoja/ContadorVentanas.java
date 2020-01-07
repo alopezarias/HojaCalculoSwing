@@ -12,17 +12,24 @@ public class ContadorVentanas {
 		contador = 0;
 	}
 	
-	//Devuelve el contador
+	/**
+	 * Metodo que devuelve el contador
+	 * @return contador
+	 */
 	public int getValue() {
 		return this.contador;
 	}
 	
-	//Aumenta el contador
+	/**
+	 * Metodo que aumenta en uno el valor del contador
+	 */
 	public void masContador() {
 		this.contador++;
 	}
 	
-	//Reduce el contador
+	/**
+	 * Metodo que reduce en uno el valor del contador
+	 */
 	public void menosContador() {
 		this.contador--;
 	}
