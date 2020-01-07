@@ -359,6 +359,7 @@ public class Tabla {
 				//System.out.println("\nEl ciclo esta abierto");
 				this.contadorCicloDeshacer = accionesDeshacer.size()+accionesRehacer.size();
 				ciclo = false;
+				this.variableEspecial++;
 			}else if(this.contadorCicloDeshacer!=0) {
 				if(this.contadorCicloDeshacer != accionesDeshacer.size()+accionesRehacer.size()) {
 					accionesRehacer.clear();
